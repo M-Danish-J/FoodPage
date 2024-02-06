@@ -17,6 +17,7 @@ import nuggetsImg from './images/nugets.jpg';
 import parathaImg from './images/Chicken-Paratha-Roll.jpg';
 import wingsImg from './images/wings.jpg';
 
+
 import { IoMdClose } from "react-icons/io";
 import SideBar from './components/SideBar';
 import Modal from './components/Modal';
