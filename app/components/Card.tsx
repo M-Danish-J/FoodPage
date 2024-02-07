@@ -9,8 +9,6 @@ interface CardProps {
     image: StaticImageData;
     setToggle: any, toggle: boolean;
     priceOptions: Array<Object>,
-    setPrice: any,
-    price: any,
 }
 interface CartItem {
     name: string;
@@ -21,10 +19,11 @@ interface CartItem {
 }
 
 
-const Card: React.FC<CardProps> = ({ name, description, image, setToggle, toggle, priceOptions, setPrice, price }) => {
+const Card: React.FC<CardProps> = ({ name, description, image, setToggle, toggle, priceOptions }) => {
 
     const [quantity, setQuantity] = useState<number>(1);
     const [size, setSize] = useState<string | null>(null);
+    const [price, setPrice] = useState<number>(0);
 
 
     const addToCart = () => {
