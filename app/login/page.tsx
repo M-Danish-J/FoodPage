@@ -15,6 +15,8 @@ const Page = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const router = useRouter();
+
         let userData = localStorage.getItem('userData');
         if (!userData) {
             alert("Create a User")
@@ -36,7 +38,6 @@ const Page = () => {
             [name]: value,
         });
     };
-    const router = useRouter();
 
     return (
         <div className="bg-white w-96 text-green-500 left-1/2 top-1/2 absolute transform -translate-x-1/2 -translate-y-1/2 box-border p-8 rounded-lg shadow-lg">
