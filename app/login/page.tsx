@@ -17,19 +17,28 @@ const Page = () => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        let userData = localStorage.getItem("userData");
+        if (formData.password === '' || formData.username === '') {
+            alert("Fill all form fields");
+            return;
+        }
+
+        let userData = localStorage.getItem("usersArray");
         if (!userData) {
-            alert("Create a User")
-            router.push("/signup")
+            alert("Create a User");
+            router.push("/signup");
         } else {
-            let parsedUserData = JSON.parse(userData)
-            if (formData.username === parsedUserData.username && formData.password === parsedUserData.password) {
-                alert("Logged In")
+            let parsedUserArray = JSON.parse(userData);
+            let foundUser = parsedUserArray.find((user: FormData) => user.username === formData.username && user.password === formData.password);
+            if (foundUser) {
+                localStorage.setItem("loggedInUser", JSON.stringify(foundUser));
+                alert("Logged In");
+                router.push("/");
             } else {
-                alert("Incorrect Credentials")
+                alert("Incorrect Credentials");
             }
         }
     };
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

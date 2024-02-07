@@ -17,15 +17,30 @@ const SignUpPage = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        let userData = localStorage.getItem('userData');
+
+        if (formData.email === '' || formData.password === '' || formData.username === '') {
+            alert("Fill all form fields");
+            return;
+        }
+
+        let userData = localStorage.getItem('usersArray');
         if (!userData) {
-            localStorage.setItem('userData', JSON.stringify(formData));
+            localStorage.setItem('usersArray', JSON.stringify([formData]));
+            alert("User created");
+            router.push("/login")
         } else {
-            let parsedUserData = JSON.parse(userData)
-            console.log(parsedUserData)
-            alert("User Already exist")
+            let parsedUserArray = JSON.parse(userData);
+            if (parsedUserArray.some((user: FormData) => user.email === formData.email)) {
+                alert("User email already exists");
+                return;
+            }
+            let newArray = [...parsedUserArray, formData];
+            localStorage.setItem('usersArray', JSON.stringify(newArray));
+            alert("User created");
+            router.push("/login")
         }
     };
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

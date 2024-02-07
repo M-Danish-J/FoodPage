@@ -16,12 +16,14 @@ import friesImg from './images/fries (2).jpg';
 import nuggetsImg from './images/nugets.jpg';
 import parathaImg from './images/Chicken-Paratha-Roll.jpg';
 import wingsImg from './images/wings.jpg';
+import { useRouter } from 'next/navigation'
 
 import { IoMdClose } from "react-icons/io";
 import SideBar from './components/SideBar';
 import Modal from './components/Modal';
 
 export default function Home() {
+  const router = useRouter();
   interface CartItem {
     name: string;
     description: string;
@@ -32,16 +34,28 @@ export default function Home() {
   interface Order {
     order: CartItem[]
   }
+  interface User {
+    name: string;
+    email: string;
+  }
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [Orders, setOrders] = useState<Order[]>([])
+  const [User, setUser] = useState<User>()
   const [loading, setLoading] = useState(true);
   const [onClick, setOnClick] = useState<string>('Pizza')
   const [toggle, setToggle] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    // Retrieve cart items from local storage
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (!loggedInUser) {
+      router.push("/login");
+    } else {
+      const user = JSON.parse(loggedInUser);
+      setUser(user)
+      console.log("Logged in user:", user);
+    }
     const storedCartItems = localStorage.getItem("Cart");
     if (storedCartItems) {
       setCartItems(JSON.parse(storedCartItems));
@@ -50,6 +64,7 @@ export default function Home() {
     if (storedHistory) {
       setOrders(JSON.parse(storedHistory));
     }
+
     setLoading(false);
   }, [toggle]);
 
@@ -111,6 +126,11 @@ export default function Home() {
       console.error("Modal content not found.");
     }
   };
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUser")
+    alert("Logged Out")
+    window.location.reload()
+  }
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className='fixed md:right-0 lg:right-auto  left-0 top-0 lg:bottom-0 z-50'>
@@ -119,7 +139,12 @@ export default function Home() {
       <div className='lg:ml-72 mt-72 lg:mt-0'>
         <div className="py-8 px-2 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Our Menu - {onClick}</h1>
+            {User && <button
+              onClick={handleLogout}
+              className="bg-red-500 mb-4 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+            >
+              Logout
+            </button>}            <h1 className="text-3xl font-bold text-gray-900 mb-8">Our Menu - {onClick}</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {
                 onClick === "Pizza" ?

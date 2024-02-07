@@ -32,7 +32,7 @@ interface TabProps {
 
 const Tab: React.FC<TabProps> = ({ name, onClick }) => {
     return (
-        <div className={`lg:w-40 py-2 px-4 rounded-md cursor-pointer text-center text-white transition duration-100 transform hover:scale-105 hover:shadow-lg border`} onClick={onClick}>
+        <div className={`leading-4 lg:w-40 py-2 px-4 rounded-md cursor-pointer text-center text-white transition duration-100 transform hover:scale-105 hover:shadow-lg border`} onClick={onClick}>
             {name}
         </div>
     );
