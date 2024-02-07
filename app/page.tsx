@@ -46,7 +46,7 @@ export default function Home() {
   const [onClick, setOnClick] = useState<string>('Pizza')
   const [toggle, setToggle] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
+  const [price, setPrice] = useState<number>(0);
   useEffect(() => {
     const loggedInUser = localStorage.getItem("loggedInUser");
     if (!loggedInUser) {
@@ -131,10 +131,14 @@ export default function Home() {
     alert("Logged Out")
     window.location.reload()
   }
+  const handleTabChange = (value: string) => {
+    setOnClick(value)
+    setPrice(0)
+  }
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className='fixed md:right-0 lg:right-auto  left-0 top-0 lg:bottom-0 z-50'>
-        <SideBar setOnClick={setOnClick} />
+        <SideBar setOnClick={handleTabChange} />
       </div>
       <div className='lg:ml-72 mt-72 lg:mt-0'>
         <div className="py-8 px-2 sm:px-6 lg:px-8">
@@ -155,14 +159,22 @@ export default function Home() {
                       name='Chicken Fajita'
                       priceOptions={[{ Small: 350 }, { Medium: 650 }, { Large: 950 }, { Family: 1350 }]}
                       description='Classic pepperoni pizza with tangy tomato sauce, mozzarella cheese, and spicy pepperoni slices.'
-                      image={pizzaImg} />
+                      image={pizzaImg}
+
+                      price={price}
+                      setPrice={setPrice}
+
+                    />
                     <Card
                       toggle={toggle}
                       setToggle={setToggle}
                       name='Chicken Tikka'
                       priceOptions={[{ Small: 350 }, { Medium: 650 }, { Large: 950 }, { Family: 1350 }]}
                       description='Classic pepperoni pizza with tangy tomato sauce, mozzarella cheese, and spicy pepperoni slices.'
-                      image={pizza2Img} />
+                      image={pizza2Img}
+
+                      price={price}
+                      setPrice={setPrice} />
                   </>
                   : onClick === "Burger" ?
                     <>
@@ -173,6 +185,8 @@ export default function Home() {
                         description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                         image={burgerImg}
                         priceOptions={[{ Rs: 420 }]}
+                        price={price}
+                        setPrice={setPrice}
                       />
                       <Card
                         toggle={toggle}
@@ -181,6 +195,8 @@ export default function Home() {
                         description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                         image={ZingerburgerImg}
                         priceOptions={[{ Rs: 360 }]}
+                        price={price}
+                        setPrice={setPrice}
                       />
                     </>
                     : onClick === "Sandwich and Warps" ?
@@ -192,6 +208,8 @@ export default function Home() {
                           description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                           image={sandwichImg}
                           priceOptions={[{ Rs: 340 }]}
+                          price={price}
+                          setPrice={setPrice}
                         />
                         <Card
                           toggle={toggle}
@@ -200,6 +218,8 @@ export default function Home() {
                           description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                           image={sandwich2Img}
                           priceOptions={[{ Rs: 340 }]}
+                          price={price}
+                          setPrice={setPrice}
                         />
                       </>
                       : onClick === "Shawarma" ?
@@ -211,6 +231,8 @@ export default function Home() {
                             description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                             image={shawarmaImg}
                             priceOptions={[{ Rs: 260 }]}
+                            price={price}
+                            setPrice={setPrice}
                           />
                         </>
                         : onClick === "Fries and Nuggets" ?
@@ -222,6 +244,8 @@ export default function Home() {
                               description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                               image={friesImg}
                               priceOptions={[{ Regular: 100 }, { Loaded: 280 }, { Cheesy: 320 }]}
+                              price={price}
+                              setPrice={setPrice}
                             />
                             <Card
                               toggle={toggle}
@@ -230,6 +254,8 @@ export default function Home() {
                               description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                               image={nuggetsImg}
                               priceOptions={[{ '5pcs': 180 }, { '10pcs': 320 }]}
+                              price={price}
+                              setPrice={setPrice}
                             />
                           </>
                           : onClick === "Hot wings" ?
@@ -241,6 +267,8 @@ export default function Home() {
                                 description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                                 image={wingsImg}
                                 priceOptions={[{ '5pcs': 200 }, { '10pcs': 350 }]}
+                                price={price}
+                                setPrice={setPrice}
                               />
                             </>
                             : onClick === "Drinks" ?
@@ -252,6 +280,8 @@ export default function Home() {
                                   description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                                   image={drinksImg}
                                   priceOptions={[{ Regular: 50 }, { 'Half liter': 100 }, { '1 liter': 150 }, { '1.5 liter': 250 }]}
+                                  price={price}
+                                  setPrice={setPrice}
                                 />
                                 <Card
                                   toggle={toggle}
@@ -260,6 +290,8 @@ export default function Home() {
                                   description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                                   image={spriteImg}
                                   priceOptions={[{ Regular: 50 }, { 'Half liter': 100 }, { '1 liter': 150 }, { '1.5 liter': 250 }]}
+                                  price={price}
+                                  setPrice={setPrice}
                                 />
                                 <Card
                                   toggle={toggle}
@@ -268,6 +300,8 @@ export default function Home() {
                                   description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                                   image={fantaImg}
                                   priceOptions={[{ Regular: 50 }, { 'Half liter': 100 }, { '1 liter': 150 }, { '1.5 liter': 250 }]}
+                                  price={price}
+                                  setPrice={setPrice}
                                 />
                               </>
                               : onClick === "Pizza Deals" ?
@@ -279,6 +313,8 @@ export default function Home() {
                                     description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                                     image={dealsImg}
                                     priceOptions={[{ Rs: 700 }]}
+                                    price={price}
+                                    setPrice={setPrice}
                                   />
                                 </>
                                 : onClick === "Paratha Roll and Grill" ?
@@ -290,6 +326,8 @@ export default function Home() {
                                       description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
                                       image={parathaImg}
                                       priceOptions={[{ Rs: 260 }]}
+                                      price={price}
+                                      setPrice={setPrice}
                                     />
                                   </>
                                   : onClick === "History" ?

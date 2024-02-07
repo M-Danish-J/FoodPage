@@ -8,7 +8,9 @@ interface CardProps {
     description: string;
     image: StaticImageData;
     setToggle: any, toggle: boolean;
-    priceOptions: Array<Object>
+    priceOptions: Array<Object>,
+    setPrice: any,
+    price: any,
 }
 interface CartItem {
     name: string;
@@ -19,11 +21,11 @@ interface CartItem {
 }
 
 
-const Card: React.FC<CardProps> = ({ name, description, image, setToggle, toggle, priceOptions }) => {
+const Card: React.FC<CardProps> = ({ name, description, image, setToggle, toggle, priceOptions, setPrice, price }) => {
 
     const [quantity, setQuantity] = useState<number>(1);
     const [size, setSize] = useState<string | null>(null);
-    const [price, setPrice] = useState<number>(0);
+
 
     const addToCart = () => {
         if (size && price) {
@@ -54,7 +56,15 @@ const Card: React.FC<CardProps> = ({ name, description, image, setToggle, toggle
                 localStorage.setItem("Cart", JSON.stringify(updatedCartItems));
                 alert("Item added to cart.");
             }
+            // Reset size and price after adding item to cart
+            setSize(null);
+            setPrice(0);
 
+            // Reset the select elements to their default options
+            const selectElement = document.getElementById(`sizeSelect_${name}`) as HTMLSelectElement;
+            selectElement.value = "0";
+            const selectQtyElement = document.getElementById(`qtySelect_${name}`) as HTMLSelectElement;
+            selectQtyElement.value = "0";
             setToggle(!toggle);
         } else {
             alert('Please select size and price before adding to cart');
@@ -78,7 +88,7 @@ const Card: React.FC<CardProps> = ({ name, description, image, setToggle, toggle
                 <p className="text-gray-600">{description}</p>
             </div>
             <div className="flex items-center justify-between space-x-4 my-3 w-full">
-                <select className="w-1/2 text-sm xl:text-base bg-[#adf7b6] text-center rounded-lg py-2 text-gray-800" onChange={(e) => setQuantity(parseInt(e.target.value))}>
+                <select id={`qtySelect_${name}`} className="w-1/2 text-sm xl:text-base bg-[#adf7b6] text-center rounded-lg py-2 text-gray-800" onChange={(e) => setQuantity(parseInt(e.target.value))}>
                     <option value={0}>Select Quantity</option>
                     {Array.from(Array(6), (e, i) => (
                         <option key={i + 1} value={i + 1}>
@@ -86,8 +96,8 @@ const Card: React.FC<CardProps> = ({ name, description, image, setToggle, toggle
                         </option>
                     ))}
                 </select>
-                {<select className="w-1/2 text-sm xl:text-base bg-[#adf7b6] rounded-lg text-center py-2 text-gray-800" onChange={(e) => { setSize(e.target.value); setPrice(parseInt(e.target.value)) }}>
-                    <option value={0}>Select Size</option>
+                {<select id={`sizeSelect_${name}`} className="w-1/2 text-sm xl:text-base bg-[#adf7b6] rounded-lg text-center py-2 text-gray-800" onChange={(e) => { setSize(e.target.value); setPrice(parseInt(e.target.value)) }}>
+                    <option value="0">Select Size</option>
                     {priceOptions.map((option, index) => (
                         <option key={index} value={Object.values(option)[0]}>
                             {Object.keys(option)[0]} - Rs{Object.values(option)[0]}
