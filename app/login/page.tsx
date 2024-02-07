@@ -1,6 +1,6 @@
-'use client'
-import React, { FormEvent, useState } from 'react';
-import { useRouter } from 'next/navigation';
+"use client"
+import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface FormData {
     username: string;
@@ -8,16 +8,16 @@ interface FormData {
 }
 
 const Page = () => {
+    const router = useRouter();
     const [formData, setFormData] = useState<FormData>({
-        username: '',
-        password: '',
+        username: "",
+        password: "",
     });
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const router = useRouter();
 
-        let userData = localStorage.getItem('userData');
+        let userData = localStorage.getItem("userData");
         if (!userData) {
             alert("Create a User")
             router.push("/signup")
@@ -67,7 +67,7 @@ const Page = () => {
                     value="Login"
                     className="w-full bg-green-500 text-white font-semibold py-2 rounded-md transition duration-300 hover:bg-green-600 cursor-pointer"
                 />
-                <p className="text-center mt-4">Don't have an account? <a onClick={() => router.push('/signup')} href="#" className="text-green-500 hover:text-green-600">Sign Up</a></p>
+                <p className="text-center mt-4">Dont have an account? <a onClick={() => router.push("/signup")} href="#" className="text-green-500 hover:text-green-600">Sign Up</a></p>
             </form>
         </div>
     );
