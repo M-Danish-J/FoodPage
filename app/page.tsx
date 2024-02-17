@@ -1,29 +1,23 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import Card from './components/Card';
-import burgerImg from './images/burger.jpg';
-import ZingerburgerImg from './images/zingerburger.jpg';
-import pizzaImg from './images/pizza.jpg';
-import pizza2Img from './images/pizzaTikka.jpg';
-import shawarmaImg from './images/shawarma.jpg';
-import sandwichImg from './images/sandwich.jpg';
-import sandwich2Img from './images/sandwich2.jpg';
+
+import { pizzaData, burgerData, sandwichWraps, shawarmaData, pizzaDeals, parathaGrill } from './menu/menu'
+// drinks
 import drinksImg from './images/cocacola.jpg';
 import spriteImg from './images/sprite.jpg';
 import fantaImg from './images/fanta.jpg';
-import dealsImg from './images/deal.jpg';
+// fries
 import friesImg from './images/fries (2).jpg';
 import nuggetsImg from './images/nugets.jpg';
-import parathaImg from './images/Chicken-Paratha-Roll.jpg';
+// wings
 import wingsImg from './images/wings.jpg';
-import { useRouter } from 'next/navigation'
 
 import { IoMdClose } from "react-icons/io";
 import SideBar from './components/SideBar';
 import Modal from './components/Modal';
 
 export default function Home() {
-  const router = useRouter();
   interface CartItem {
     name: string;
     description: string;
@@ -34,28 +28,16 @@ export default function Home() {
   interface Order {
     order: CartItem[]
   }
-  interface User {
-    name: string;
-    email: string;
-  }
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [Orders, setOrders] = useState<Order[]>([])
-  const [User, setUser] = useState<User>()
   const [loading, setLoading] = useState(true);
   const [onClick, setOnClick] = useState<string>('Pizza')
   const [toggle, setToggle] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    if (!loggedInUser) {
-      router.push("/login");
-    } else {
-      const user = JSON.parse(loggedInUser);
-      setUser(user)
-      console.log("Logged in user:", user);
-    }
+    // Retrieve cart items from local storage
     const storedCartItems = localStorage.getItem("Cart");
     if (storedCartItems) {
       setCartItems(JSON.parse(storedCartItems));
@@ -64,7 +46,6 @@ export default function Home() {
     if (storedHistory) {
       setOrders(JSON.parse(storedHistory));
     }
-
     setLoading(false);
   }, [toggle]);
 
@@ -126,97 +107,76 @@ export default function Home() {
       console.error("Modal content not found.");
     }
   };
-  const handleLogout = () => {
-    localStorage.removeItem("loggedInUser")
-    alert("Logged Out")
-    window.location.reload()
-  }
-  const handleTabChange = (value: string) => {
-    setOnClick(value)
-  }
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className='fixed md:right-0 lg:right-auto  left-0 top-0 lg:bottom-0 z-50'>
-        <SideBar setOnClick={handleTabChange} />
+        <SideBar setOnClick={setOnClick} />
       </div>
       <div className='lg:ml-72 mt-72 lg:mt-0'>
         <div className="py-8 px-2 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            {User && <button
-              onClick={handleLogout}
-              className="bg-red-500 mb-4 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-            >
-              Logout
-            </button>}            <h1 className="text-3xl font-bold text-gray-900 mb-8">Our Menu - {onClick}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-8">Our Menu - {onClick}</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {
                 onClick === "Pizza" ?
                   <>
-                    <Card
-                      toggle={toggle}
-                      setToggle={setToggle}
-                      name='Chicken Fajita'
-                      priceOptions={[{ Small: 350 }, { Medium: 650 }, { Large: 950 }, { Family: 1350 }]}
-                      description='Classic pepperoni pizza with tangy tomato sauce, mozzarella cheese, and spicy pepperoni slices.'
-                      image={pizzaImg}
-                    />
-                    <Card
-                      toggle={toggle}
-                      setToggle={setToggle}
-                      name='Chicken Tikka'
-                      priceOptions={[{ Small: 350 }, { Medium: 650 }, { Large: 950 }, { Family: 1350 }]}
-                      description='Classic pepperoni pizza with tangy tomato sauce, mozzarella cheese, and spicy pepperoni slices.'
-                      image={pizza2Img}
-                    />
+                    {pizzaData.map((item: any, index: number) => {
+                      return (
+                        <Card
+                          key={item.id}
+                          toggle={toggle}
+                          setToggle={setToggle}
+                          name={item.name}
+                          priceOptions={item.priceOptions}
+                          description={item.description}
+                          image={item.image} />
+                      );
+                    })}
                   </>
                   : onClick === "Burger" ?
                     <>
-                      <Card
-                        toggle={toggle}
-                        setToggle={setToggle}
-                        name='Tower Burger'
-                        description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
-                        image={burgerImg}
-                        priceOptions={[{ Rs: 420 }]}
-                      />
-                      <Card
-                        toggle={toggle}
-                        setToggle={setToggle}
-                        name='Mighty Zinger'
-                        description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
-                        image={ZingerburgerImg}
-                        priceOptions={[{ Rs: 360 }]}
-                      />
+                      {burgerData.map((item: any, index: number) => {
+                        return (
+                          <Card
+                            key={item.id}
+                            toggle={toggle}
+                            setToggle={setToggle}
+                            name={item.name}
+                            priceOptions={item.priceOptions}
+                            description={item.description}
+                            image={item.image} />
+                        );
+                      })}
                     </>
                     : onClick === "Sandwich and Warps" ?
                       <>
-                        <Card
-                          toggle={toggle}
-                          setToggle={setToggle}
-                          name='Club Sandwich'
-                          description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
-                          image={sandwichImg}
-                          priceOptions={[{ Rs: 340 }]}
-                        />
-                        <Card
-                          toggle={toggle}
-                          setToggle={setToggle}
-                          name='Peri Peri Sandwich'
-                          description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
-                          image={sandwich2Img}
-                          priceOptions={[{ Rs: 340 }]}
-                        />
+                        {sandwichWraps.map((item: any, index: number) => {
+                          return (
+                            <Card
+                              key={item.id}
+                              toggle={toggle}
+                              setToggle={setToggle}
+                              name={item.name}
+                              priceOptions={item.priceOptions}
+                              description={item.description}
+                              image={item.image} />
+                          );
+                        })}
                       </>
                       : onClick === "Shawarma" ?
                         <>
-                          <Card
-                            toggle={toggle}
-                            setToggle={setToggle}
-                            name='Zinger Shawarma'
-                            description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
-                            image={shawarmaImg}
-                            priceOptions={[{ Rs: 260 }]}
-                          />
+                          {shawarmaData.map((item: any, index: number) => {
+                            return (
+                              <Card
+                                key={item.id}
+                                toggle={toggle}
+                                setToggle={setToggle}
+                                name={item.name}
+                                priceOptions={item.priceOptions}
+                                description={item.description}
+                                image={item.image} />
+                            );
+                          })}
                         </>
                         : onClick === "Fries and Nuggets" ?
                           <>
@@ -277,25 +237,33 @@ export default function Home() {
                               </>
                               : onClick === "Pizza Deals" ?
                                 <>
-                                  <Card
-                                    toggle={toggle}
-                                    setToggle={setToggle}
-                                    name='Deal 1'
-                                    description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
-                                    image={dealsImg}
-                                    priceOptions={[{ Rs: 700 }]}
-                                  />
+                                  {pizzaDeals.map((item: any, index: number) => {
+                                    return (
+                                      <Card
+                                        key={item.id}
+                                        toggle={toggle}
+                                        setToggle={setToggle}
+                                        name={item.name}
+                                        priceOptions={item.priceOptions}
+                                        description={item.description}
+                                        image={item.image} />
+                                    );
+                                  })}
                                 </>
                                 : onClick === "Paratha Roll and Grill" ?
                                   <>
-                                    <Card
-                                      toggle={toggle}
-                                      setToggle={setToggle}
-                                      name='Kabab Paratha Roll'
-                                      description='Juicy beef patty with melted cheese, served with fresh lettuce and tomatoes on a sesame seed bun.'
-                                      image={parathaImg}
-                                      priceOptions={[{ Rs: 260 }]}
-                                    />
+                                    {parathaGrill.map((item: any, index: number) => {
+                                      return (
+                                        <Card
+                                          key={item.id}
+                                          toggle={toggle}
+                                          setToggle={setToggle}
+                                          name={item.name}
+                                          priceOptions={item.priceOptions}
+                                          description={item.description}
+                                          image={item.image} />
+                                      );
+                                    })}
                                   </>
                                   : onClick === "History" ?
                                     <div id='order-history'>
